@@ -10,7 +10,7 @@ sh make.sh
 **Run**<br/>
 To run the program, simply run
 ```
-./your_sorter
+./your_sorter test.dat
 ```
 **Combined**<br/>
 It is also possible to compile and run the program in one execution. This can be done using `runmake.sh`, which combines compiling and running in one script.
