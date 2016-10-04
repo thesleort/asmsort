@@ -10,5 +10,5 @@ sh make.sh
 **Run**<br/>
 To run the program, simply run
 ```
-./asmsort
+./your_sorter
 ```
