@@ -15,7 +15,7 @@ To run the program, simply run
 **Combined**<br/>
 It is also possible to compile and run the program in one execution. This can be done using `runmake.sh`, which combines compiling and running in one script.
 ```
-sh runmake.sh
+sh runmake.sh test.dat
 ```
 #Generate test file
 To generate a test file, simply run `randomgen.sh` with a number-parameter to tell how many random numbers the test file should have.
