@@ -15,5 +15,5 @@ To run the program, simply run
 **Combined**<br/>
 It is also possible to compile and run the program in one execution. This can be done using `runmake.sh`, which combines compiling and running in one script.
 ```
-runmake.sh
+sh runmake.sh
 ```
