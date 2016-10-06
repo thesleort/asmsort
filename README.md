@@ -29,4 +29,6 @@ https://software.intel.com/en-us/articles/introduction-to-x64-assembly <br/><br/
 **Linux System Calls x86_64 (Syscalls)**<br/>
 http://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/ <br/><br/>
 **Intel & AT&T syntax differences** <br/>
-http://www.imada.sdu.dk/~kslarsen/Courses/dm546-2014-spring/Litteratur/IntelnATT.htm
+http://www.imada.sdu.dk/~kslarsen/Courses/dm546-2014-spring/Litteratur/IntelnATT.htm <br/><br/>
+**Richard's Website** <br/>
+http://imada.sdu.dk/~roettger/teaching/2016_fall_dm548.php
