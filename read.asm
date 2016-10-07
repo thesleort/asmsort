@@ -6,6 +6,7 @@ newline: .string "\n"
 .section .text
 .globl _start
 _start:
+
 	mov 16(%rsp), %r8	#File to open
 
 	mov $2, %rax	#Open file
