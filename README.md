@@ -31,4 +31,6 @@ http://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/ <br/><br/>
 **Intel & AT&T syntax differences** <br/>
 http://www.imada.sdu.dk/~kslarsen/Courses/dm546-2014-spring/Litteratur/IntelnATT.htm <br/><br/>
 **Richard's Website** <br/>
-http://imada.sdu.dk/~roettger/teaching/2016_fall_dm548.php
+http://imada.sdu.dk/~roettger/teaching/2016_fall_dm548.php<br/><br/>
+**Simple tutorial**<br/>
+http://asm.poly.ro/0x4553-Asm_tutor.html
