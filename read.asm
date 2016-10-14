@@ -1,5 +1,5 @@
 .section .data
-buffer: .space 64
+buffer: .space 65536
 
 newline: .string "\n"
 
@@ -26,7 +26,7 @@ _start:
 	mov $1, %rax	#Write to command line
 	mov $1, %rdi
 	mov $buffer, %rsi
-	mov $11, %rdx
+	mov $7, %rdx
 	syscall
 	
 	
