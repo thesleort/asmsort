@@ -3,9 +3,9 @@ A number sorter made in intel x86 using AT&amp;T assembly language.
 
 #Compiling and testing the program
 **Compile**<br/>
-To compile the program, simply run the following shell script in the Linux terminal.
+To compile the program, simply run make in the Linux terminal. (make.sh is now deprecated and will not be supported any longer)
 ```
-sh make.sh
+make
 ```
 **Run**<br/>
 To run the program, simply run
