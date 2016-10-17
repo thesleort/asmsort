@@ -12,7 +12,6 @@ _start:
 	mov $2, %rax	#Open file
 	mov %r8, %rdi
 	mov $0, %rsi
-	mov $2, %rdx
 	syscall
 	
 	mov %rax, %r9		
