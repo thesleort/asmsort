@@ -35,7 +35,11 @@ _read:
 	cmp $0, 			%RAX		# Ensure haven't read EOF
 	je _exit						# Stop reading file
 
+<<<<<<< a9503bc56e2027afac35982c1d815c0de39c6d52
 _write:								# Put on stack/list instead of printing it.
+=======
+_write:								# TODO Put on stack/list instead of printing it.
+>>>>>>> read.asm now works
 	mov %RAX, 			%RDX		# Print whatever is in RAX
 	mov $SYS_WRITE,		%RAX		# Write
 	mov $STDOUT, 		%RDI		# Standard output
