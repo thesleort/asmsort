@@ -13,7 +13,8 @@ newline: .string "\n"
 _start:
     xor     %R12,       %R12    # Clear R12, which should hold an integer to be written
     xor     %R15,       %R15    # Clear R15, for counting length of integer
-    mov     $10,        %R13    # DO NOT TOUCH!
+    mov     $10,        %R13    # DO NOT TOUCH! - Division by 10.
+
     push    $1234
     push    $4325
     push    $1337
@@ -25,16 +26,16 @@ _getnum:
     je      _exit
 
 _convert:
-    inc     %R15
-    mov     %R12,       %RAX
-    mov     $0,         %RDX
-    div     %R13
-    add     $48,        %RDX
-    push    %RDX
-    mov     %RAX,       %R12
-    cmp     $0,         %R12
+    inc     %R15                # Increase digit counter.
+    mov     %R12,       %RAX    # Move integer for div instruction.
+    xor     %RDX,       %RDX    # Set RDX to 0 for division.
+    div     %R13                # Execute the division.
+    add     $48,        %RDX    # RDX holds the remainder from division, and we add 48 to convert to ascii.
+    push    %RDX                # We push RDX to the stack so we can get digits out in correct order.
+    mov     %RAX,       %R12    # RAX holds the number after division has been executed, and we move it back into R12
+    cmp     $0,         %R12    # if R12 is 0, we are done with this number and we can start printing it
     je      _print              # Print the number
-    jmp     _convert
+    jmp     _convert            # Otherwise, keep converting the number to digits.
 
 _print:
     pop     %R14
