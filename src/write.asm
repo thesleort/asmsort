@@ -15,10 +15,6 @@ _start:
     xor     %R15,       %R15    # Clear R15, for counting length of integer
     mov     $10,        %R13    # DO NOT TOUCH! - Division by 10.
 
-    push    $1234
-    push    $4325
-    push    $1337
-
 _getnum:
     xor     %R12,       %R12
     pop     %R12
