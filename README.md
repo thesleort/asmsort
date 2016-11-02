@@ -2,9 +2,7 @@
 A number sorter made in intel x86 using AT&amp;T assembly language.
 # Data folder
 All data files will be uploaded to this cloud drive.
-```
 https://mega.nz/#F!04EkyRTJ!yz8fun2amc5-6Hl175cJxQ
-```
 
 #Compiling and testing the program
 **Compile**<br/>
