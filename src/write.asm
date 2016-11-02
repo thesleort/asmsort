@@ -28,9 +28,9 @@ _convert:
     div     %R13                # Execute the division.
     add     $48,        %RDX    # RDX holds the remainder from division, and we add 48 to convert to ascii.
     push    %RDX                # We push RDX to the stack so we can get digits out in correct order.
-    mov     %RAX,       %R12    # RAX holds the number after division has been executed, and we move it back into R12
-    cmp     $0,         %R12    # if R12 is 0, we are done with this number and we can start printing it
-    je      _print              # Print the number
+    mov     %RAX,       %R12    # RAX holds the number after division has been executed, and we move it back into R12.
+    cmp     $0,         %R12    # if R12 is 0, we are done with this number and we can start printing it.
+    je      _print              # Print the number.
     jmp     _convert            # Otherwise, keep converting the number to digits.
 
 _print:
