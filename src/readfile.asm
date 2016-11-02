@@ -5,7 +5,7 @@
 newline: .string "\n"
 
 .section .bss
-	.lcomm file_buffer, 1000000
+	.lcomm file_buffer, 80000000
 	.lcomm int_buffer, 8
 
 .set SYS_READ, 	0
@@ -22,18 +22,20 @@ _start:
 	mov 16(%RSP),		%R8		# File to open
 	xor %R12,			%R12
 	mov $1,				%R13
+	push	%RBP
+	mov		%RSP,		%RBP
 
 _open:
 	mov $SYS_OPEN,		%RAX	# Open file
 	mov %R8,			%RDI	# File descriptor
-	mov $0,				%RSI	# Interrupt flag
+	xor %RSI,			%RSI	# Interrupt flag4
 	syscall
 	mov %RAX,			%R9
 
 
 _initread:
 	#Get File Size
-	mov $5,				%RAX			# Syscall fstat
+	mov $5,				%RAX	# Syscall fstat
 	mov %R9,			%RDI	# File Handler
 	mov $file_stat,		%RSI	# Reserved space for the stat struct
 	syscall
@@ -51,7 +53,7 @@ _initread:
 _read:
 
 	xor %RDX,			%RDX
-	movb (%R15),		%dl
+	movb (%R15),		%dl		# dl is in RDX
 
 	cmp $0,				%dl		# Ensure haven't read EOF
 	je _exit					# Stop reading file
@@ -61,8 +63,6 @@ _read:
 	je _write
 	cmp $0,				%R13
 	jne _add
-
-	cmp $0,				%R13
 	je _add2
 
 
@@ -71,7 +71,7 @@ _add:
 	movzx %dl,			%R14
 	sub $48,			%R14
 	add %R14,			%R12
-	mov $0,				%R13
+	xor %R13,			%R13
 	inc %R15
 	jmp _read
 
@@ -84,20 +84,8 @@ _add2:
 	jmp _read
 
 _write:	# TODO Put on stack/list instead of printing it.
-	push %R14
-	mov $int_buffer, 	%R14
-	mov %R12,			(%R14)
-	mov $SYS_WRITE,		%RAX	# Write
-	mov $STDOUT, 		%RDI	# Standard output
-	mov %R14,			%RSI
-	mov $8,				%RDX
-	syscall
-	pop %R14
-	mov $SYS_WRITE,		%RAX
-	mov $STDOUT,		%RDI
-	mov $newline,		%RSI
-	mov $2,				%RDX
-	syscall
+
+	push %R12
 
 	mov $1,				%R13
 	inc %R15
