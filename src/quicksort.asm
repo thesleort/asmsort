@@ -56,16 +56,14 @@ _read:
 	movb (%R15),		%dl		# dl is in RDX
 
 	cmp $0,				%dl		# Ensure haven't read EOF
-	je _start_quicksort			# Stop reading file
-
+	je _final		# Stop reading file
 
 	cmp $0xA,			%dl
 	je _pts
+
 	cmp $0,				%R13
 	jne _add
 	je _add2
-
-
 
 _add:
 	movzx %dl,			%R14
@@ -92,6 +90,11 @@ _pts:							# TODO Put on stack/list instead of printing it.
 	xor		%R12,		%R12
 	jmp 	_read				# Read file again
 
+_final:
+	cmp 	$0,			%R12
+	je 		_start_quicksort
+	inc 	%RCX
+	push	%R12
 
 _start_quicksort:
 	mov		$-8,		%R15
