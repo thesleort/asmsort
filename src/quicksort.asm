@@ -41,31 +41,29 @@ _initread:
 	syscall
 
 	mov $file_stat,		%RBX
-	mov 48(%RBX),		%RDX	# Position of size in the struct
+	mov 48(%RBX),		%rdx	# Position of size in the struct
 
 	mov $SYS_READ,		%RAX	# Read file
 	mov %R9,			%RDI	# File descriptor from before
 	mov $file_buffer,	%RSI	#
 	syscall
 	mov $file_buffer,	%R15
-	xor %RCX,			%RCX
+	xor %rcx,			%rcx
 
 _read:
 
-	xor %RDX,			%RDX
-	movb (%R15),		%dl		# dl is in RDX
+	xor %rdx,			%rdx
+	movb (%R15),		%dl		# dl is in rdx
 
 	cmp $0,				%dl		# Ensure haven't read EOF
-	je _start_quicksort			# Stop reading file
-
+	je _final		# Stop reading file
 
 	cmp $0xA,			%dl
 	je _pts
+
 	cmp $0,				%R13
 	jne _add
 	je _add2
-
-
 
 _add:
 	movzx %dl,			%R14
@@ -84,23 +82,29 @@ _add2:
 	jmp _read
 
 _pts:							# TODO Put on stack/list instead of printing it.
-	inc		%RCX
+	inc		%rcx
 	push	%R12
 
 	mov 	$1,			%R13
 	inc 	%R15
+	xor		%R12,		%R12
 	jmp 	_read				# Read file again
 
+_final:
+	cmp 	$0,			%R12
+	je 		_start_quicksort
+	inc 	%rcx
+	push	%R12
 
 _start_quicksort:
 	mov		$-8,		%R15
-	imul	%RCX,		%R15	#TODO change %r14 and %r15 to fit a varying number of list elements
-	mov		$-8, 		%r14				#initial value of minimum should be -8 (%rbp - 8 is the first index of the list since %rbp points to the old %rsp)
-	#mov		%R12, 		%r15				#initial value of max.
-	#sub %r10, %r15				#%rsp = %rbp - k. because of the subtraction sign we use sub to get the value of max. this should work as max = %rbp + (-k)
+	imul	%rcx,		%R15	# TODO change %r14 and %r15 to fit a varying number of list elements
+	mov		$-8, 		%r14				# initial value of minimum should be -8 (%rbp - 8 is the first index of the list since %rbp points to the old %rsp)
+	#mov		%R12, 		%r15				# initial value of max.
+	#sub %r10, %r15				# %rsp = %rbp - k. because of the subtraction sign we use sub to get the value of max. this should work as max = %rbp + (-k)
 	movq 	(%rbp, %r14),%mm1
 
-	mov %r15, %r11				#initialize the counter. this should be equal to max - min. this is counted upwards from a negative value to zero
+	mov %r15, %r11				# initialize the counter. this should be equal to max - min. this is counted upwards from a negative value to zero
 	sub %r14, %r11
 
 	movq $-8, %r13
@@ -127,7 +131,7 @@ quicksort:
 	je return 					# if min is greater than or equal to max
 	jg return
 
-	movq (%rbp, %r14), %mm1		# the pivot is the first element in the list and is kept in an mmx register
+	movq (%rbp, %r14), %rcx		# the pivot is the first element in the list and is kept in an mmx register
 	mov %r15, %r12				# reset i
 	mov %r14, %r13				# reset mid
 
@@ -143,7 +147,7 @@ quicksort:
 	add $8, %r12
 	mov %r12, %r15				# new max = i+8
 
-	mov %r15, %r11				#initialize the counter. this should be equal to max - min. this is counted upwards from a negative value to zero
+	mov %r15, %r11				# initialize the counter. this should be equal to max - min. this is counted upwards from a negative value to zero
 	sub %r14, %r11
 
 	call quicksort
@@ -151,7 +155,7 @@ quicksort:
 	pop %r14				# min = i-8
 	pop %r15				# max = old max from the stack
 
-	mov %r15, %r11				#initialize the counter. this should be equal to max - min. this is counted upwards from a negative value to zero
+	mov %r15, %r11				# initialize the counter. this should be equal to max - min. this is counted upwards from a negative value to zero
 	sub %r14, %r11
 
 	call quicksort
@@ -163,21 +167,23 @@ quicksort:
 
 partition:
 	compare_loop:
-	test %r11, %r11				#when %r15 = we have compared all objects
-	jz done	#_write_3 #done
+	test %r11, %r11				# when %r15 = we have compared all objects
+	jz done
 
 
-	movq (%rbp, %r12), %mm0
-	psubq %mm1, %mm0
-	movq %mm0, %rax
-	test %rax, %rax				#sets sf==1 if (%mm0)<(%mm1) and zf==1 if (%mm0)==(%mm1)
-	js less_or_equal			#if (%mm0)<(%mm1) or
-	jz less_or_equal			#if (%mm0)==(%mm1)
+	movq 	(%rbp, %r12),	%rdx
+	cmp		%rcx,			%rdx
+	jbe		less_or_equal
+	# subq %rcx, %rdx
+	# movq %rdx, %rax
+	# test %rax, %rax				# sets sf==1 if (%mm0)<(%mm1) and zf==1 if (%mm0)==(%mm1)
+	# js less_or_equal			# if (%mm0)<(%mm1) or
+	# jz less_or_equal			# if (%mm0)==(%mm1)
 
-						#else (%mm0)>(%mm1)
+						# else (%mm0)>(%mm1)
 	greater:
-	sub $8, %r13
-	add $8, %r11
+	subq $8, %r13
+	addq $8, %r11
 	movq (%rbp, %r12), %rsi
 	movq (%rbp, %r13), %rdi
 	movq %rdi, (%rbp, %r12)
@@ -185,8 +191,8 @@ partition:
 	jmp compare_loop
 
 	less_or_equal:
-	add $8, %r12
-	add $8, %r11
+	addq $8, %r12
+	addq $8, %r11
 	jmp compare_loop
 
 	done:
@@ -197,7 +203,6 @@ partition:
 
 	ret
 
-
 	_write:
 	    xor     %R12,       %R12    # Clear R12, which should hold an integer to be written
 	    xor     %R15,       %R15    # Clear R15, for counting length of integer
@@ -206,16 +211,16 @@ partition:
 	_getnum:
 	    xor     %R12,       %R12
 	    pop     %R12
-	    cmp     %RSP,       %RBP
+	    cmp     $0,      	%R12
 	    je      _exit
 
 	_convert:
 	    inc     %R15                # Increase digit counter.
 	    mov     %R12,       %RAX    # Move integer for div instruction.
-	    xor     %RDX,       %RDX    # Set RDX to 0 for division.
+	    xor     %rdx,       %rdx    # Set rdx to 0 for division.
 	    div     %R13                # Execute the division.
-	    add     $48,        %RDX    # RDX holds the remainder from division, and we add 48 to convert to ascii.
-	    push    %RDX                # We push RDX to the stack so we can get digits out in correct order.
+	    add     $48,        %rdx    # rdx holds the remainder from division, and we add 48 to convert to ascii.
+	    push    %rdx                # We push rdx to the stack so we can get digits out in correct order.
 	    mov     %RAX,       %R12    # RAX holds the number after division has been executed, and we move it back into R12.
 	    cmp     $0,         %R12    # if R12 is 0, we are done with this number and we can start printing it.
 	    je      _print              # Print the number.
@@ -228,7 +233,7 @@ partition:
 	    mov     $SYS_WRITE, %RAX
 	    mov     $STDOUT,    %RDI
 	    mov     %R12,       %RSI
-	    mov     $1,         %RDX
+	    mov     $1,         %rdx
 	    syscall
 
 	    dec     %R15
@@ -240,7 +245,7 @@ partition:
 	    mov $SYS_WRITE,		%RAX
 	    mov $STDOUT,		%RDI
 	    mov $newline,		%RSI
-	    mov $1,				%RDX
+	    mov $1,				%rdx
 	    syscall
 	    jmp _getnum                 # Get new number
 

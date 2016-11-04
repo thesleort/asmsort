@@ -2,3 +2,4 @@ test.dat
 *.o
 your_sorter
 build/
+data/
