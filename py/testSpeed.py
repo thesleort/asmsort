@@ -17,7 +17,7 @@ def testSpeed(binary, dataPath):
     for size in sizes:
         for n in range(0, 20):
             filename = dataPath + "{0}_{1}.dat".format(size, n)
-            format_string = "%e"
+            format_string = "%U"
             cmd = ["time", "-o", "out_time", "-f", format_string, binary, filename]
             f = open("tmp", "w")
             process = subprocess.Popen(cmd, stdout=f)
