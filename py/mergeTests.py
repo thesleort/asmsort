@@ -50,5 +50,4 @@ def mergeTests(file1, file2):
                 print "\tN/A"
 
 
-
 mergeTests(sys.argv[1], sys.argv[2])
