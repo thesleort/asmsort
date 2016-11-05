@@ -42,12 +42,14 @@ def mergeTests(file1, file2):
         for el in locals()["spd_" + str(size)]:
             print("\t" + str(el)),
         print("\n" + str(size) + "_mcips:"),
+        n = 0
         for el in locals()["cmp_" + str(size)]:
-            idx = locals()["cmp_" + str(size)].index(el)
             try:
-                print("\t" + str((el / locals()["spd_" + str(size)][idx])/1000000)),
+                print("\t" + str(round((el / locals()["spd_" + str(size)][n])/1000000, 2))),
             except ZeroDivisionError:
-                print("\tN/A"),
+                print("\tN/A".rstrip()),
+            n += 1
+        print
 
 
 mergeTests(sys.argv[1], sys.argv[2])
