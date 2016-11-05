@@ -38,13 +38,17 @@ def mergeTests(file1, file2):
             else:
                 locals()["cmp_" + current].append(float(line[0]))
     for size in sizes:
-        print(str(size) + "_time: "),
+        print(str(size) + "_time:"),
         for el in locals()["spd_" + str(size)]:
-            print(str(el) + "\t"),
-        print(str(size) + "_mcips: ")
+            print("\t" + str(el)),
+        print(str(size) + "_mcips:")
         for el in locals()["cmp_" + str(size)]:
             idx = locals()["cmp_" + str(size)].index(el)
-            print(str((el/1000000)/locals()["spd_" + str(size)][idx]))
+            try:
+                print("\t" + str((el / 1000000) / locals()["spd_" + str(size)][idx]))
+            except ZeroDivisionError:
+                print "\tN/A"
+
 
 
 mergeTests(sys.argv[1], sys.argv[2])
