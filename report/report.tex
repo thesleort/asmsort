@@ -44,7 +44,7 @@
 \end{comment}
 
 \title{Computer Architecture \\Sorting with assembly \\\rule{10cm}{0.5mm}}
-\author{Kasper\\Henrik\\Troels\\Morten\\Simon Lehmann Knudsen(simkn15)
+\author{Kasper\\Henrik Sejer Pedersen(henpe15)\\Troels\\Morten\\Simon Lehmann Knudsen(simkn15)
 \\ DM548\\\rule{5.5cm}{0.5mm}\\}
 \date{06/11-2016}
 
@@ -62,6 +62,32 @@
 Remember to state why you chosen the given algorithm.
 
 \section{Results}
-Remember to discuss the results, not just presenting them.
+Testing was automated through a series of \texttt{Python} scripts. Data sets with 10, 100, 1.000, 5.000, 10.000, 50.000, 100.000, 500.000 and 1.000.000 numbers were generated, each number having a value between $0$ and $2^{64} - 1$. \newline
+Additionally, all tests were run on the terminal room computers at IMADA, through SSH.
+\subsection{Speed}
+When measuring the runtime of a binary, we use the user time and system time from the GNU \texttt{time} program, such that $runtime = \%S + \%U$ since this is the time the system uses on behalf of the program as well as the time that the program uses itself. We did not use the real time option available in the program, as after a bit of testing this seemed unreliable, with up to several seconds difference between runtimes on the same data file. \newline
+in the file \textit{radixResults.tsv}, which can be opened as plain text or with most spreadsheet viewers, it is apparent that the sorting is too quick for the \texttt{time} program to measure for files with less than 50.000 numbers. However, from 50.000 numbers and up, the runtime is clearly linear with relation to how many numbers are sorted.
+
+\subsection{Comparisons}
+Looking at the comparisons, they are the same across all files with the same amount of numbers, as expected by radix sort.\\
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|r|r|}\hline
+		Numbers&Comparisons\\\hline\hline
+		10&2.880\\\hline
+		100&25.920\\\hline
+		1.000&256.320\\\hline
+		5.000&1.280.320\\\hline
+		10.000&2.560,320\\\hline
+		50.000&12.800.320\\\hline
+		100.000&25.600.320\\\hline
+		500.000&128.000.320\\\hline
+		1.000.000&256.000.320\\\hline
+	\end{tabular}\label{table:comp} \caption{Comparisons related to numbers sorted}
+\end{table}\\
+Looking at the table there is a constant of 320 compares no matter size of the input. If this constant is disregarded, we see that there is a linear correlation between how many numbers and number of comparisons. The reason for this is working on the bits, knowing that the numbers can always be represented in 64 bits.
+
+\subsection{conclusion}
+The mcips \textit{(look at radixResults.tsv)} seem to decrease the more numbers are sorted, flatting out around 250-270 mcips, which could be due to the low runtime with less than 500.000 numbers. With the runtime being as linear as it is, it would seem that one of two things happen with regard to Read/Write: Either the read and write functionality is equally linear to the sorting, or it is so little that the runtime is strongly dominated by the sorting.
 
 \end{document}
