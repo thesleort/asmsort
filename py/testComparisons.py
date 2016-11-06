@@ -27,7 +27,7 @@ def testComparisons(binary, dataPath):
                 for line in process.stdout:
                     locals()["_" + str(size)].append(line.strip("\n"))
     for size in sizes:
-        print("Size: " + str(size))
+        print("Test size: " + str(size))
         for el in locals()["_" + str(size)]:
             print(el)
 

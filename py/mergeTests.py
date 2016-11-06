@@ -26,15 +26,15 @@ def mergeTests(file1, file2):
     with open(file1, "r") as f_in:
         for line in f_in:
             line = line.split()
-            if len(line) == 2:
-                current = line[1]
+            if len(line) == 3:
+                current = line[2]
             else:
-                locals()["spd_" + current].append(float(line[0]))
+                locals()["spd_" + current].append(float(line[0]) + float(line[1]))
     with open(file2, "r") as f_in:
         for line in f_in:
             line = line.split()
-            if len(line) == 2:
-                current = line[1]
+            if len(line) == 3:
+                current = line[2]
             else:
                 locals()["cmp_" + current].append(float(line[0]))
     for size in sizes:
