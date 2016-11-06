@@ -1,4 +1,6 @@
-# MAY NOT WORK
+# Creates a file with comparison information for use in mergeTests.py
+# Arg1: path to sorting binary (which should only output number of comparisons)
+# Arg2: path to data folder
 
 import subprocess
 import sys

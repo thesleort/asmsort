@@ -1,5 +1,5 @@
-# Arg 1: speed, Arg 2: comparisons
-# Untested
+# Arg 1: speed file, Arg 2: comparison file
+
 import sys
 
 

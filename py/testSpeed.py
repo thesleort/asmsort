@@ -1,3 +1,7 @@
+# Creates a file with time information for use in mergeTests.py
+# Arg1: path to sorting binary
+# Arg2: path to data folder
+
 import os
 import subprocess
 import sys
